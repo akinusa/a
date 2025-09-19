@@ -1,0 +1,95 @@
+
+     node -v
+     npm -v
+
+
+     npm install -g @ionic/cli
+
+
+     ionic start studentApp blank
+
+   
+     cd studentApp
+
+
+     ionic generate page registration
+     ionic generate page display
+registration.page.html)
+
+     <ion-header>
+       <ion-toolbar>
+         <ion-title>Student Registration</ion-title>
+       </ion-toolbar>
+     </ion-header>
+
+     <ion-content class="ion-padding">
+       <form (ngSubmit)="register()">
+         <ion-item>
+           <ion-label position="floating">Name</ion-label>
+           <ion-input [(ngModel)]="student.name" name="name" required></ion-input>
+         </ion-item>
+
+         <ion-item>
+           <ion-label position="floating">Email</ion-label>
+           <ion-input type="email" [(ngModel)]="student.email" name="email" required></ion-input>
+         </ion-item>
+
+         <ion-item>
+           <ion-label position="floating">Course</ion-label>
+           <ion-input [(ngModel)]="student.course" name="course" required></ion-input>
+         </ion-item>
+
+         <ion-button expand="full" type="submit">Register</ion-button>
+       </form>
+     </ion-content>
+registration.page.ts)
+   - Inside the class, add:
+
+     student = {
+       name: '',
+       email: '',
+       course: ''
+     };
+
+     constructor(private router: Router) {}
+
+     register() {
+       this.router.navigate(['/display'], {
+         state: { student: this.student }
+       });
+     }
+
+   - Don’t forget to import Router:
+     import { Router } from '@angular/router';
+display.page.html)
+
+     <ion-header>
+       <ion-toolbar>
+         <ion-title>Student Details</ion-title>
+       </ion-toolbar>
+     </ion-header>
+
+     <ion-content class="ion-padding">
+       <h2>Student Information</h2>
+       <p><strong>Name:</strong> {{ student?.name }}</p>
+       <p><strong>Email:</strong> {{ student?.email }}</p>
+       <p><strong>Course:</strong> {{ student?.course }}</p>
+     </ion-content>
+display.page.ts)
+   - Inside the class, add:
+
+     student: any;
+
+     constructor(private router: Router) {
+       const nav = this.router.getCurrentNavigation();
+       if (nav?.extras.state) {
+         this.student = nav.extras.state['student'];
+       }
+     }
+
+     import { Router } from '@angular/router';
+
+10. Import FormsModule
+ /app.module.ts
+     import { FormsModule } from '@angular/forms';
+   - Add FormsModule to the imports array.
