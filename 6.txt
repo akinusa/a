@@ -1,0 +1,13 @@
+set id 
+mainactivity
+ Button btn = findViewById(R.id.btnOpenSecond);
+  btn.setOnClickListener(v -> {
+            Intent intent = new Intent(this, SecondActivity.class);
+            intent.putExtra("message", "Hello from MainActivity!");
+            startActivity(intent);
+second activity 
+TextView tv = findViewById(R.id.tvSecond);
+
+        // Get data from intent
+        String msg = getIntent().getStringExtra("message");
+        tv.setText(msg);
