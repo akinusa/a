@@ -1,0 +1,41 @@
+npm install -g cordova
+cordova create HelloWorldApp com.example.helloworld HelloWorldApp
+cd HelloWorldApp
+cordova platform add android
+cordova build android
+cordova run android
+ index.html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JSON with CSS</title>
+    <script src="cordova.js"></script>
+    <style>
+      body { font-family: Arial; margin: 20px; }
+      .card { background: #f0f0f0; padding: 15px; margin-bottom: 10px; border-radius: 5px; box-shadow: 1px 1px 5px #ccc; }
+      .name { font-weight: bold; font-size: 18px; }
+      .marks { color: #007BFF; }
+    </style>
+    <script>
+      document.addEventListener("deviceready", function() {
+        const students = [
+          {"id":1, "name":"Alice", "marks":90},
+          {"id":2, "name":"Bob", "marks":85},
+          {"id":3, "name":"Charlie", "marks":92}
+        ];
+
+        const container = document.getElementById("studentContainer");
+        students.forEach(s => {
+          const div = document.createElement("div");
+          div.className = "card";
+          div.innerHTML = `<div class="name">${s.name}</div><div class="marks">Marks: ${s.marks}</div>`;
+          container.appendChild(div);
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Student List</h1>
+    <div id="studentContainer"></div>
+  </body>
+</html>
