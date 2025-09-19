@@ -1,0 +1,117 @@
+add scrollview xmlns
+
+create database.java
+ package com.example.studentapp;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class Database extends SQLiteOpenHelper {
+
+    private static final String DB_NAME = "student_db";
+    private static final String TABLE = "students";
+
+    public Database(Context c) { super(c, DB_NAME, null, 1); }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + TABLE + " (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, marks INTEGER)");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int o, int n) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE);
+        onCreate(db);
+    }
+
+    public boolean insertStudent(String name, int marks) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues v = new ContentValues();
+        v.put("name", name); v.put("marks", marks);
+        return db.insert(TABLE, null, v) != -1;
+    }
+
+    public boolean updateStudent(int id, String name, int marks) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues v = new ContentValues();
+        v.put("name", name); v.put("marks", marks);
+        return db.update(TABLE, v, "id=?", new String[]{String.valueOf(id)}) > 0;
+    }
+
+    public boolean deleteStudent(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(TABLE, "id=?", new String[]{String.valueOf(id)}) > 0;
+    }
+
+    public Cursor getAllStudents() {
+        return getReadableDatabase().rawQuery("SELECT * FROM " + TABLE, null);
+    }
+}
+in main activity.java
+import android.database.Cursor;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    Database db;
+    EditText idInput, nameInput, marksInput;
+    TextView resultView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        db = new Database(this);
+
+        idInput = findViewById(R.id.idInput);
+        nameInput = findViewById(R.id.nameInput);
+        marksInput = findViewById(R.id.marksInput);
+        resultView = findViewById(R.id.resultView);
+
+        Button addBtn = findViewById(R.id.addBtn);
+        Button updateBtn = findViewById(R.id.updateBtn);
+        Button deleteBtn = findViewById(R.id.deleteBtn);
+        Button viewBtn = findViewById(R.id.viewBtn);
+
+        addBtn.setOnClickListener(v -> {
+            String name = nameInput.getText().toString().trim();
+            if(name.isEmpty()){ Toast.makeText(this,"Enter name",Toast.LENGTH_SHORT).show(); return; }
+            int marks = Integer.parseInt(marksInput.getText().toString());
+            Toast.makeText(this, db.insertStudent(name, marks) ? "Inserted Successfully" : "Insert Failed", Toast.LENGTH_SHORT).show();
+        });
+
+        updateBtn.setOnClickListener(v -> {
+            String idStr = idInput.getText().toString().trim();
+            if(idStr.isEmpty()){ Toast.makeText(this,"Enter ID",Toast.LENGTH_SHORT).show(); return; }
+            int id = Integer.parseInt(idStr);
+            int marks = Integer.parseInt(marksInput.getText().toString());
+            String name = nameInput.getText().toString().trim();
+            Toast.makeText(this, db.updateStudent(id, name, marks) ? "Updated Successfully" : "Update Failed", Toast.LENGTH_SHORT).show();
+        });
+
+        deleteBtn.setOnClickListener(v -> {
+            String idStr = idInput.getText().toString().trim();
+            if(idStr.isEmpty()){ Toast.makeText(this,"Enter ID",Toast.LENGTH_SHORT).show(); return; }
+            int id = Integer.parseInt(idStr);
+            Toast.makeText(this, db.deleteStudent(id) ? "Deleted Successfully" : "Delete Failed", Toast.LENGTH_SHORT).show();
+        });
+
+        viewBtn.setOnClickListener(v -> {
+            Cursor c = db.getAllStudents();
+            StringBuilder sb = new StringBuilder();
+            while(c.moveToNext()){
+                sb.append("ID: ").append(c.getInt(0)).append(", Name: ").append(c.getString(1)).append(", Marks: ").append(c.getInt(2)).append("\n");
+            }
+            resultView.setText(sb.toString());
+        });
+    }
+}
