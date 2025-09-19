@@ -1,0 +1,25 @@
+npm install -g cordova
+cordova create HelloWorldApp com.example.helloworld HelloWorldApp
+cd HelloWorldApp
+cordova platform add android
+cordova build android
+cordova run android
+ index.html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello World</title>
+    <script src="cordova.js"></script>
+    <script>
+      document.addEventListener("deviceready", function() {
+        document.getElementById("btnAlert").addEventListener("click", function() {
+          alert("Hello World!");
+        });
+      }, false);
+    </script>
+  </head>
+  <body>
+    <h1>Welcome to Cordova</h1>
+    <button id="btnAlert">Click Me</button>
+  </body>
+</html>
