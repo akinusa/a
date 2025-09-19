@@ -1,0 +1,87 @@
+Practical 2: User Login Form in Ionic
+
+Aim:
+To design and implement a user login form that validates user credentials.
+
+Steps:
+
+1. Install Node.js
+   - Download and install Node.js from https://nodejs.org/
+   - Verify installation by running:
+     node -v
+     npm -v
+
+2. Install Ionic CLI
+   - Run the following command in your terminal:
+     npm install -g @ionic/cli
+
+3. Create a New Ionic Project
+   - Run:
+     ionic start loginApp blank
+   - Choose Angular framework when prompted.
+
+4. Navigate into the Project Folder
+   - Run:
+     cd loginApp
+
+5. Generate a Login Page
+   - Run:
+     ionic generate page login
+
+6. Open the Login Page Template (src/app/login/login.page.html)
+   - Replace its contents with:
+
+     <ion-header>
+       <ion-toolbar>
+         <ion-title>Login</ion-title>
+       </ion-toolbar>
+     </ion-header>
+
+     <ion-content class="ion-padding">
+       <form (ngSubmit)="login()">
+         <ion-item>
+           <ion-label position="floating">Username</ion-label>
+           <ion-input type="text" [(ngModel)]="username" name="username" required></ion-input>
+         </ion-item>
+
+         <ion-item>
+           <ion-label position="floating">Password</ion-label>
+           <ion-input type="password" [(ngModel)]="password" name="password" required></ion-input>
+         </ion-item>
+
+         <ion-button expand="full" type="submit">Login</ion-button>
+       </form>
+     </ion-content>
+
+7. Open the Login Page Logic (src/app/login/login.page.ts)
+   - Add the following code inside the class:
+
+     username: string = "";
+     password: string = "";
+
+     login() {
+       if(this.username === "admin" && this.password === "1234") {
+         alert("Login Successful!");
+       } else {
+         alert("Invalid Credentials");
+       }
+     }
+
+8. Import FormsModule
+   - Open src/app/app.module.ts
+   - Add this import at the top:
+     import { FormsModule } from '@angular/forms';
+   - Add FormsModule to the imports array.
+
+9. Run the Application
+   - Run:
+     ionic serve
+   - This will open your browser and display the login form.
+
+10. Test the Login
+   - Enter Username: admin
+   - Enter Password: 1234
+   - Press Login → should show "Login Successful!".
+   - Any other input → should show "Invalid Credentials".
+
+Congratulations! You have implemented a simple User Login Form in Ionic.

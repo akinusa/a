@@ -1,0 +1,46 @@
+Steps to Create a Hello World Program in Ionic
+
+1. Install Node.js
+   - Download and install Node.js from https://nodejs.org/
+   - Verify installation by running:
+     node -v
+     npm -v
+
+2. Install Ionic CLI
+   - Run the following command in your terminal:
+     npm install -g @ionic/cli
+
+3. Create a New Ionic Project
+   - Run:
+     ionic start helloWorldApp blank
+   - This will create a new Ionic app with a blank template.
+
+4. Navigate into the Project Folder
+   - Run:
+     cd helloWorldApp
+
+5. Run the App in the Browser
+   - Run:
+     ionic serve
+   - This will open your default browser and show the Ionic app running.
+
+6. Edit the Home Page to Display 'Hello World'
+   - Open the file:
+     src/app/home/home.page.html
+   - Replace its contents with:
+     <ion-header>
+       <ion-toolbar>
+         <ion-title>
+           Hello World App
+         </ion-title>
+       </ion-toolbar>
+     </ion-header>
+
+     <ion-content class="ion-padding">
+       <h1>Hello World</h1>
+     </ion-content>
+
+7. Save the File
+   - The browser running 'ionic serve' will auto-reload and display 'Hello World' on the screen.
+
+Congratulations! You have created your first Hello World program in Ionic.
